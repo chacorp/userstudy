@@ -35,8 +35,8 @@ async function initializeData() {
         console.log("[DEBUG] referenceVideos 로드 완료:", Object.keys(referenceVideos));
     }
 
-    console.log("📌 [INFO] videos.csv 데이터 로드 시작");
-    const genData = await loadCSV("videos.csv");
+    console.log("📌 [INFO] reenact.csv 데이터 로드 시작");
+    const genData = await loadCSV("reenact.csv");
 
     generatedVideos = []; // 기존 데이터 초기화 후 저장
     genData.forEach(video => {
