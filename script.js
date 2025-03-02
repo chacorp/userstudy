@@ -75,7 +75,6 @@ async function initializeData() {
         const videoKey = `${mode}-${title}-${task}-${tgt}`; // 🔥 고유 Key 생성
 
         const embeddedLink = video["Embedded link"].trim();
-        const task = video.task.trim();
 
         let referenceTitle = findReferenceTitle(title);
         let referenceLink = referenceVideos[referenceTitle] || "";
