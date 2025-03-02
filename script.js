@@ -14,10 +14,10 @@ async function loadCSV(file) {
     const data = await response.text();
 
     const rows = data.split("\n").map(row => row.trim()).filter(row => row);
-    const headers = rows[0].split(",").map(header => header.trim()); // ✅ 쉼표 기준으로 헤더 분리
+    const headers = rows[0].split(",").map(header => header.trim());
 
     return rows.slice(1).map(row => {
-        const values = row.split(",").map(value => value.trim()); // ✅ 쉼표 기준으로 데이터 분리
+        const values = row.split(",").map(value => value.trim()); 
         // console.log(`values: ${values}`);
         return Object.fromEntries(headers.map((header, i) => [header, values[i] || ""]));
     });
@@ -39,16 +39,17 @@ async function initializeData() {
     }
 
     // ref-image.csv 로드 & Google Drive 이미지 URL 변환
+    console.log("📌 [INFO] ref-image.csv 데이터 로딩...");
     const refImageData = await loadCSV("ref-image.csv");
     let referenceImages = {};
     refImageData.forEach(image => {
         if (image.title && image["Embedded link"]) {
-            referenceImages[image.title.trim()] = `https://drive.google.com/uc?id=${image["Embedded link"].trim()}`;
+            let imageUrl = `https://drive.google.com/uc?id=${image["Embedded link"].trim()}`;
+            referenceImages[image.title.trim()] = imageUrl;
+            console.log(`🖼️ [DEBUG] 이미지 변환: ${image.title} → ${imageUrl}`);
         }
     });
-
-    // console.log("📌 [INFO] videos.csv 데이터 로드 시작");
-    const genData = await loadCSV("videos.csv");
+    console.log("✅ [SUCCESS] referenceImages 로드 완료:", referenceImages);
 
     generatedVideos = []; // 기존 데이터 초기화 후 저장
     genData.forEach(video => {
