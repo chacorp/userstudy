@@ -43,10 +43,8 @@ async function initializeData() {
     const refImageData = await loadCSV("ref-image.csv");
     let referenceImages = {};
     refImageData.forEach(image => {
-        if (image.title && image["Embedded link"]) {
-            let imageUrl = `https://drive.google.com/uc?id=${image["Embedded link"].trim()}`;
-            referenceImages[image.title.trim()] = imageUrl;
-            console.log(`🖼️ [DEBUG] 이미지 변환: ${image.title} → ${imageUrl}`);
+        if (image.title && image["root link"]) {
+            referenceImages[image.title.trim()] = image["root link"].trim();
         }
     });
     console.log("✅ [SUCCESS] referenceImages 로드 완료:", referenceImages);
@@ -65,6 +63,7 @@ async function initializeData() {
         let referenceTitle = findReferenceTitle(title);
         let referenceLink = referenceVideos[referenceTitle] || "";
         let referenceImage = referenceImages[tgt] || ""; 
+        console.log(`📌 [INFO] referenceImage ${tgt}: ${referenceImages[tgt]}`);
 
         generatedVideos.push({ title, generatedLink: embeddedLink, referenceTitle, referenceLink, referenceImage });
     });
