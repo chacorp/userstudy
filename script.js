@@ -9,11 +9,13 @@ const keywords = ["AE", "BE", "CE", "DE", "EA", "EB", "EC", "ED"];
 async function loadCSV(file) {
     const response = await fetch(file);
     const data = await response.text();
+
     const rows = data.split("\n").map(row => row.trim()).filter(row => row);
-    const headers = rows[0].split("\t"); // TSV 형식으로 구분
+    const headers = rows[0].split(",").map(header => header.trim()); // ✅ 쉼표 기준으로 헤더 분리
+
     return rows.slice(1).map(row => {
-        const values = row.split("\t");
-        return Object.fromEntries(headers.map((header, i) => [header, values[i] || ""])); // 값이 없을 경우 빈 문자열 할당
+        const values = row.split(",").map(value => value.trim()); // ✅ 쉼표 기준으로 데이터 분리
+        return Object.fromEntries(headers.map((header, i) => [header, values[i] || ""]));
     });
 }
 
