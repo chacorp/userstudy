@@ -269,7 +269,31 @@ function saveResponsesToGoogleSheets() {
         console.log("✅ 응답 저장 완료 (CORS 무시):", response);
         alert("설문 응답이 저장되었습니다! (CORS 무시)");
     })
-    .catch(error => console.error("❌ 오류 발생:", error));
+    .catch(error => {
+        console.error("❌ 오류 발생:", error);
+        showFailureMessage();
+    });
+}
+function showFailureMessage() {
+    const failedData = JSON.stringify(userResponses, null, 2); // 🔥 JSON 데이터를 보기 쉽게 변환
+
+    alert("🚨 Google Sheets 전송에 실패했습니다!\n\n" +
+          "⚠️ 직접 복사하여 이메일 또는 메시지로 보내주세요.\n\n" +
+          "📋 데이터를 복사하려면 확인 버튼을 누르세요.");
+
+    // 🔹 실패한 데이터를 클립보드에 자동 복사
+    copyToClipboard(failedData);
+    
+    console.log("📌 [INFO] 실패한 응답 데이터:", failedData);
+}
+function copyToClipboard(text) {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+    alert("📋 데이터가 클립보드에 복사되었습니다!\n\n이제 직접 붙여넣어서 보내주세요.");
 }
 
 
