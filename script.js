@@ -202,7 +202,7 @@ function updateVideo() {
 
     // 생성된 비디오 정보 표시
     // titleElement.textContent = videoData.title;
-    let num = `[${currentIndex}:${generatedVideos.length}]`;
+    let num = `[${currentIndex+1}:${generatedVideos.length}]`;
 
     titleElement.textContent = (videoData.task === "reenact") ? `${num} Reenact task` : `${num} Dubbing task`;
     generatedVideoFrame.src = videoData.generatedLink;
