@@ -126,15 +126,6 @@ function updateVideo() {
 
     referenceVideoFrame.src = videoData.referenceLink;
     referenceVideoFrame.allow = "autoplay; controls; loop; playsinline"; // allow 속성 적용
-    if (videoData.referenceLink) {
-        if (referenceVideoFrame) {
-            referenceVideoFrame.src = videoData.referenceLink;
-            referenceVideoFrame.allow = "autoplay; controls; loop; playsinline"; // allow 속성 적용
-        }
-        if (referenceSection) referenceSection.style.display = "block";
-    } else {
-        if (referenceSection) referenceSection.style.display = "none";
-    }
 
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
