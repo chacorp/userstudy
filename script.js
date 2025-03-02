@@ -1,7 +1,7 @@
 let referenceVideos = null;  // reference.csv 데이터를 한 번만 로드하도록 설정
 let generatedVideos = [];    // videos.csv에서 불러온 데이터 저장
 let currentIndex = 0;
-let googleScriptURL = null;
+let googleScriptURL = localStorage.getItem("googleScriptURL") || ""; // 🔥 `let`으로 변경
 
 // 특정 키워드 목록 (EC, DE, AE, BE, EB 등)
 const keywords = ["AE", "BE", "CE", "DE", "EA", "EB", "EC", "ED"];
@@ -73,12 +73,14 @@ async function initializeData() {
 
 function saveGoogleScriptURL() {
     const inputURL = document.getElementById("googleScriptURL").value.trim();
+    
     if (!inputURL.startsWith("https://script.google.com/macros/s/")) {
         alert("🚨 올바른 Google Apps Script URL을 입력하세요!");
         return;
     }
-    googleScriptURL = inputURL;
-    localStorage.setItem("googleScriptURL", googleScriptURL); // 🔥 로컬스토리지에 저장
+
+    googleScriptURL = inputURL;  // ✅ 이제 정상적으로 값 변경 가능
+    localStorage.setItem("googleScriptURL", googleScriptURL);
     alert("✅ Google Script URL이 저장되었습니다!");
 }
 
