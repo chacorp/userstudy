@@ -12,8 +12,8 @@ body {
 }
 
 iframe {
-    height: 450px;
-    width: auto;
+    width: 60%; 
+    height: auto;
     /* margin: 20px 0; */
 }
 
