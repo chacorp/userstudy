@@ -109,46 +109,31 @@ function updateVideo() {
         console.error("❌ [ERROR] 업데이트할 비디오가 없습니다!");
         return;
     }
-
+    
+    // get video
     const videoData = generatedVideos[currentIndex];
-
-    // ✅ 요소가 존재하는지 확인 후 설정
     const titleElement = document.getElementById("videoTitle");
-    // const generatedTitleElement = document.getElementById("generatedTitle");
-    // const generatedLinkElement = document.getElementById("generatedLink");
     const generatedVideoFrame = document.getElementById("generatedVideo");
 
-    // if (!titleElement || !generatedTitleElement || !generatedLinkElement || !generatedVideoFrame) {
-    //     console.error("❌ [ERROR] 필요한 HTML 요소가 존재하지 않습니다! HTML 구조 확인 필요!");
-    //     return;
-    // }
 
     // 🔹 생성된 비디오 정보 표시
     titleElement.textContent = videoData.title;
-    // generatedTitleElement.textContent = videoData.title;
-    // generatedLinkElement.textContent = videoData.generatedLink;
     generatedVideoFrame.src = videoData.generatedLink;
-    generatedVideoFrame.allow = "autoplay; controls; loop; playsinline"; // ✅ allow 속성 적용
+    generatedVideoFrame.allow = "autoplay; controls; loop; playsinline"; // allow 속성 적용
 
-    // ✅ 레퍼런스 비디오 요소 체크 후 설정
-    // const referenceTitleElement = document.getElementById("referenceTitle");
-    // const referenceLinkElement = document.getElementById("referenceLink");
     const referenceVideoFrame = document.getElementById("referenceVideo");
     const referenceSection = document.getElementById("referenceSection");
 
     if (videoData.referenceLink) {
-        // if (referenceTitleElement) referenceTitleElement.textContent = videoData.referenceTitle;
-        // if (referenceLinkElement) referenceLinkElement.textContent = videoData.referenceLink;
         if (referenceVideoFrame) {
             referenceVideoFrame.src = videoData.referenceLink;
-            referenceVideoFrame.allow = "autoplay; controls; loop; playsinline"; // ✅ allow 속성 적용
+            referenceVideoFrame.allow = "autoplay; controls; loop; playsinline"; // allow 속성 적용
         }
         if (referenceSection) referenceSection.style.display = "block";
     } else {
         if (referenceSection) referenceSection.style.display = "none";
     }
 
-    // 버튼 상태 업데이트 (✅ 요소 존재 확인 추가)
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
     const homeBtn = document.getElementById("homeBtn");
