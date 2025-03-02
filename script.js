@@ -37,6 +37,10 @@ async function loadVideos() {
         let referenceTitle = findReferenceTitle(title);
         let referenceLink = referenceVideos[referenceTitle] || "";
 
+        console.log(`▶ 찾은 비디오: ${title}`);
+        console.log(`  - Embedded Link: ${embeddedLink}`);
+        console.log(`  - 매칭된 레퍼런스: ${referenceTitle} → ${referenceLink || "없음"}`);
+
         // 리스트에 추가
         generatedVideos.push({ title, generatedLink: embeddedLink, referenceTitle, referenceLink });
     });
@@ -46,6 +50,7 @@ async function loadVideos() {
         updateVideo();
     }
 }
+
 
 // title에서 키워드 다음의 단어 찾기
 function findReferenceTitle(title) {
@@ -82,13 +87,16 @@ function restartVideos() {
 // iframe 업데이트 및 버튼 상태 변경
 function updateVideo() {
     const videoData = generatedVideos[currentIndex];
-
-    document.getElementById("videoTitle").textContent = videoData.title;
+    
     document.getElementById("referenceVideo").src = videoData.referenceLink || "";
     document.getElementById("referenceVideo").allow = "autoplay; controls; loop; playsinline"; 
+    document.getElementById("referenceTitle").textContent = videoData.referenceTitle;
+    document.getElementById("referenceLink").textContent = videoData.referenceLink;
     
     document.getElementById("generatedVideo").src = videoData.generatedLink;
     document.getElementById("generatedVideo").allow = "autoplay; controls; loop; playsinline"; 
+    document.getElementById("generatedTitle").textContent = videoData.title;
+    document.getElementById("generatedLink").textContent = videoData.generatedLink;
 
     document.getElementById("prevBtn").style.display = currentIndex === 0 ? "none" : "inline-block";
     document.getElementById("nextBtn").style.display = currentIndex === generatedVideos.length - 1 ? "none" : "inline-block";
