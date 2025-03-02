@@ -154,8 +154,13 @@ function updateVideo() {
 
     const referenceImage = document.getElementById("referenceImage");
     if (videoData.referenceImage) {
-        referenceImage.src = videoData.referenceImage;
-        referenceImage.style.display = "block";
+        let fileId = videoData.referenceImage.match(/[-\w]{25,}/); // FILE_ID 추출
+        if (fileId) {
+            referenceImage.src = `https://drive.google.com/uc?id=${fileId[0]}`;
+            referenceImage.style.display = "block";
+        } else {
+            referenceImage.style.display = "none";
+        }
     } else {
         referenceImage.style.display = "none";
     }

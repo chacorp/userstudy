@@ -19,7 +19,16 @@ body {
 .video-container, .image-container {
     width: 100%;
     max-width: 800px;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 1 / 1;
+    margin: 10px auto;
+    display: flex;
+    justify-content: center;
+}
+
+.video-container2 {
+    width: 100%;
+    max-width: 1000px;
+    aspect-ratio: 2 / 1;
     margin: 10px auto;
     display: flex;
     justify-content: center;
