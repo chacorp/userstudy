@@ -226,6 +226,7 @@ function updateVideo() {
         document.getElementById("appearanceB").checked = (userResponses[videoKey].appearance === 'B');
     }
 
+    resetCheckboxes();
     // 🔹 페이지 전환 시 스크롤을 맨 위로 이동
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
