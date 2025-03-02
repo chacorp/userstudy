@@ -264,7 +264,7 @@ function checkCompletionAndShowResults() {
 
     for (const videoKey in userResponses) {
         const response = userResponses[videoKey];
-
+        console.log(`response: ${response}`);
         // 🔹 응답이 없을 경우 기본값 "Not Answered" 표시
         const motion = response.motion ? response.motion : "Not Answered";
         const sync = response.sync ? response.sync : "Not Answered";
