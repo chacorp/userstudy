@@ -268,19 +268,21 @@ function saveResponsesToGoogleSheets() {
     //     alert("🚨 Google Apps Script URL을 입력하세요!");
     //     return;
     // }
+    // fetch(googleScriptURL, {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify(userResponses)
+    // })
+    // .then(response => {
+    //     alert("설문 응답이 정상적으로로 제출되었습니다!");
+    // })
+    // .catch(error => {
+    //     console.error("앗 제출 ❌ 오류;;;", error);
+    //     showFailureMessage();
+    // });
 
-    fetch(googleScriptURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userResponses)
-    })
-    .then(response => {
-        alert("설문 응답이 정상적으로로 제출되었습니다!");
-    })
-    .catch(error => {
-        console.error("앗 제출 ❌ 오류;;;", error);
-        showFailureMessage();
-    });
+    // 일단 무조건 실패!
+    showFailureMessage();
 }
 function showFailureMessage() {
     const failedData = JSON.stringify(userResponses, null, 2); // 🔥 JSON 데이터를 보기 쉽게 변환
