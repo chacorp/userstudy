@@ -87,6 +87,8 @@ async function initializeData() {
 
         generatedVideos.push({ title, mode, task, tgt, videoKey, generatedLink: embeddedLink, referenceTitle, referenceLink, referenceImage });
     });
+    
+    shuffleArray(generatedVideos);
 
     if (generatedVideos.length > 0) {
         currentIndex = 0;
@@ -99,6 +101,12 @@ async function initializeData() {
     console.log("[INFO] 총", generatedVideos.length, "개의 비디오 데이터가 로드됨");
 }
 
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; 
+    }
+}
 
 function updateChoice(questionIndex, choice) {
     if (generatedVideos.length === 0) return;
