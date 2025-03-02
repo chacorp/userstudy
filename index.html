@@ -32,14 +32,14 @@
 
         <div>
             <h3>Which video shows the motion similar to the reference video?</h3>
-            <label><input type="checkbox" id="motionA" onchange="updateChoice(this, 1, 'A')"> A (left video)</label>
-            <label><input type="checkbox" id="motionB" onchange="updateChoice(this, 1, 'B')"> B (right video)</label>
+            <label><input type="checkbox" id="motionA" onchange="updateChoice(1, 'A')"> A (left video)</label>
+            <label><input type="checkbox" id="motionB" onchange="updateChoice(1, 'B')"> B (right video)</label>
         </div>
         
         <div>
             <h3>Which video syncs lip movement accurately with audio?</h3>
-            <label><input type="checkbox" id="syncA" onchange="updateChoice(this, 2, 'A')"> A (left video)</label>
-            <label><input type="checkbox" id="syncB" onchange="updateChoice(this, 2, 'B')"> B (right video)</label>
+            <label><input type="checkbox" id="syncA" onchange="updateChoice(2, 'A')"> A (left video)</label>
+            <label><input type="checkbox" id="syncB" onchange="updateChoice(2, 'B')"> B (right video)</label>
         </div>
         
         <h3>Reference Image</h3>
@@ -49,8 +49,8 @@
         
         <div>
             <h3>Which video shows the appearance similar to the reference image?</h3>
-            <label><input type="checkbox" id="appearanceA" onchange="updateChoice(this, 3, 'A')"> A (left video)</label>
-            <label><input type="checkbox" id="appearanceB" onchange="updateChoice(this, 3, 'B')"> B (right video)</label>
+            <label><input type="checkbox" id="appearanceA" onchange="updateChoice(3, 'A')"> A (left video)</label>
+            <label><input type="checkbox" id="appearanceB" onchange="updateChoice(3, 'B')"> B (right video)</label>
         </div>
         
         <div class="buttons">
