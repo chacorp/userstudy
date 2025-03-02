@@ -230,7 +230,8 @@ function updateVideo() {
     referenceVideoFrame.allow = "autoplay; controls; loop; playsinline"; // allow 속성 적용
 
     const referenceImage = document.getElementById("referenceImage");
-    if (videoData.task === "reenact" && videoData.referenceImage) {
+    // if (videoData.task === "reenact" && videoData.referenceImage) {
+    if (videoData.referenceImage) {
         referenceImage.src = videoData.referenceImage;
         referenceImage.style.display = "block";
     } else {
