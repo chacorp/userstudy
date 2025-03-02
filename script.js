@@ -51,6 +51,7 @@ async function initializeData() {
     });
     console.log("✅ [SUCCESS] referenceImages 로드 완료:", referenceImages);
 
+    const genData = await loadCSV("reenact.csv");
     generatedVideos = []; // 기존 데이터 초기화 후 저장
     genData.forEach(video => {
         if (!video.title || !video["Embedded link"]) {
@@ -59,11 +60,10 @@ async function initializeData() {
 
         const title = video.title.trim();
         const embeddedLink = video["Embedded link"].trim();
+        const tgt = video.tgt.trim();
 
         let referenceTitle = findReferenceTitle(title);
         let referenceLink = referenceVideos[referenceTitle] || "";
-
-        const tgt = video.tgt.trim();
         let referenceImage = referenceImages[tgt] || ""; 
 
         generatedVideos.push({ title, generatedLink: embeddedLink, referenceTitle, referenceLink, referenceImage });
