@@ -73,7 +73,7 @@ async function initializeData() {
         const task = video.task.trim();
         const tgt = video.tgt.trim();
         const videoKey = `${mode}-${title}-${task}-${tgt}`; // 🔥 고유 Key 생성
-        
+
         const embeddedLink = video["Embedded link"].trim();
         const tgt = video.tgt.trim();
 
@@ -84,7 +84,7 @@ async function initializeData() {
         let referenceImage = referenceImages[tgt] || ""; 
         console.log(`📌 [INFO] referenceImage ${tgt}: ${referenceImages[tgt]}`);
 
-        generatedVideos.push({ title, mode, videoKey, generatedLink: embeddedLink, referenceTitle, referenceLink, referenceImage, task });
+        generatedVideos.push({ title, mode, task, tgt, videoKey, generatedLink: embeddedLink, referenceTitle, referenceLink, referenceImage });
     });
 
     if (generatedVideos.length > 0) {
@@ -202,7 +202,9 @@ function updateVideo() {
 
     // 생성된 비디오 정보 표시
     // titleElement.textContent = videoData.title;
-    titleElement.textContent = (videoData.task === "reenact") ? `${currentIndex} Reenact task` : `${currentIndex} Dubbing task`;
+    let num = `[${currentIndex}:${generatedVideos.length}]`;
+
+    titleElement.textContent = (videoData.task === "reenact") ? `${num} Reenact task` : `${num} Dubbing task`;
     generatedVideoFrame.src = videoData.generatedLink;
     generatedVideoFrame.allow = "autoplay; controls; loop; playsinline"; // allow 속성 적용
 
