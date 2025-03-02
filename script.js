@@ -80,7 +80,7 @@ async function initializeData() {
         let referenceLink = referenceVideos[referenceTitle] || "";
         // let referenceImage = referenceImages[tgt] || ""; 
         let referenceImage = (`${task}` === "reenact") ? referenceImages[tgt] : referenceImages[title];
-        // console.log(`📌 [INFO] referenceImage ${tgt}: ${referenceImages[tgt]}`);
+        console.log(`📌 [INFO] ${task} tgt: ${tgt}: title ${title} -> ${referenceImages[tgt]} | `);
         
         if (!userResponses[videoKey]) {
             userResponses[videoKey] = { motion: "none", sync: "none", appearance: "none" };
