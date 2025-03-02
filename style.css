@@ -22,14 +22,18 @@ iframe {
     margin-top: 20px;
 }
 
-.next-btn {
+.nav-btn, .home-btn {
     padding: 10px 20px;
     background-color: #007bff;
     color: white;
     text-decoration: none;
     border-radius: 5px;
+    display: inline-block;
+    margin: 10px;
+    border: none;
+    cursor: pointer;
 }
 
-.next-btn:hover {
+.nav-btn:hover, .home-btn:hover {
     background-color: #0056b3;
 }
