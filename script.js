@@ -6,6 +6,7 @@ let referenceImages = {};
 
 let isInitialized = false; 
 let userResponses = {};
+let new_video = true;
 
 // 특정 키워드 목록 (EC, DE, AE, BE, EB 등)
 const keywords = ["AE", "BE", "CE", "DE", "EA", "EB", "EC", "ED"];
@@ -106,9 +107,12 @@ function updateChoice(questionIndex, choice) {
         userResponses[videoKey] = { motion: "", sync: "", appearance: "" };
     }
 
-    userResponses[videoKey].motion = 'none';
-    userResponses[videoKey].sync = 'none';
-    userResponses[videoKey].appearance = 'none';
+    if (new_video){
+        userResponses[videoKey].motion = 'none';
+        userResponses[videoKey].sync = 'none';
+        userResponses[videoKey].appearance = 'none';
+        new_video = false;
+    }
 
     // 🔹 같은 질문에서 하나만 선택할 수 있도록 처리
     if (questionIndex === 1) {
@@ -166,7 +170,8 @@ function changeVideo(direction) {
     if (currentIndex >= generatedVideos.length) {
         currentIndex = generatedVideos.length - 1;
     }
-
+    
+    new_video = true;
     updateVideo();
 }
 
