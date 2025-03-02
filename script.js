@@ -13,7 +13,7 @@ const keywords = ["AE", "BE", "CE", "DE", "EA", "EB", "EC", "ED"];
 
 // CSV 파일을 읽어 JSON으로 변환하는 함수
 async function loadCSV(file) {
-    const response = await fetch(file);
+    const response = await fetch(frile);
     const data = await response.text();
 
     const rows = data.split("\n").map(row => row.trim()).filter(row => row);
@@ -60,7 +60,7 @@ async function initializeData() {
     });
     // console.log("[INFO] referenceImages 로드 완료:", referenceImages);
 
-    const genData = await loadCSV("reenact.csv");
+    const genData = await loadCSV("videos.csv");
     generatedVideos = [];
 
     genData.forEach(video => {
