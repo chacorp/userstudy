@@ -87,7 +87,7 @@ async function initializeData() {
 
         generatedVideos.push({ title, mode, task, tgt, videoKey, generatedLink: embeddedLink, referenceTitle, referenceLink, referenceImage });
     });
-    
+
     shuffleArray(generatedVideos);
 
     if (generatedVideos.length > 0) {
@@ -263,10 +263,11 @@ function updateVideo() {
 //     .catch(error => console.error("❌ 오류 발생:", error));
 // }
 function saveResponsesToGoogleSheets() {
-    if (!googleScriptURL) {
-        alert("🚨 Google Apps Script URL을 입력하세요!");
-        return;
-    }
+    //// 왜인지 모르겠는데 API 안됨 ... 무조건 복사.... 
+    // if (!googleScriptURL) {
+    //     alert("🚨 Google Apps Script URL을 입력하세요!");
+    //     return;
+    // }
 
     fetch(googleScriptURL, {
         method: "POST",
@@ -274,7 +275,7 @@ function saveResponsesToGoogleSheets() {
         body: JSON.stringify(userResponses)
     })
     .then(response => {
-        alert("설문 응답이 제출되었습니다!");
+        alert("설문 응답이 정상적으로로 제출되었습니다!");
     })
     .catch(error => {
         console.error("앗 제출 ❌ 오류;;;", error);
@@ -284,9 +285,9 @@ function saveResponsesToGoogleSheets() {
 function showFailureMessage() {
     const failedData = JSON.stringify(userResponses, null, 2); // 🔥 JSON 데이터를 보기 쉽게 변환
 
-    alert("🚨 Google Sheets 전송에 실패했습니다!\n\n" +
-          "⚠️ 직접 복사하여 이메일 또는 메시지로 보내주세요.\n\n" +
-          "📋 데이터를 복사하려면 확인 버튼을 누르세요.");
+    alert("🚨 오우 쉩! Google Sheets 전송에 쉴패했습니다!\n\n" +
+          "⚠️ 직접 복사하여 메시지로 보내주세요.\n\n" +
+          "📋 확인 버튼을 누르면 데이터가 json 형식으로 클립보드에 복사됩니다.");
 
     // 🔹 실패한 데이터를 클립보드에 자동 복사
     copyToClipboard(failedData);
