@@ -33,7 +33,7 @@ async function initializeData() {
     }
 
     console.log("📌 [INFO] 데이터 로딩 시작...");
-    isInitialized = true; // 🔥 처음 실행되면 플래그 설정
+    isInitialized = true;
     
     userResponses = {};
 
@@ -225,41 +225,10 @@ function updateVideo() {
     if (nextBtn) nextBtn.style.display = currentIndex === generatedVideos.length - 1 ? "none" : "inline-block";
     if (homeBtn) homeBtn.style.display = currentIndex === generatedVideos.length - 1 ? "inline-block" : "none";
 
-    // if (userResponses[videoKey]) {
-    //     document.getElementById("motionA").checked = (userResponses[videoKey].motion === 'A');
-    //     document.getElementById("motionB").checked = (userResponses[videoKey].motion === 'B');
-    //     document.getElementById("syncA").checked = (userResponses[videoKey].sync === 'A');
-    //     document.getElementById("syncB").checked = (userResponses[videoKey].sync === 'B');
-    //     document.getElementById("appearanceA").checked = (userResponses[videoKey].appearance === 'A');
-    //     document.getElementById("appearanceB").checked = (userResponses[videoKey].appearance === 'B');
-    // }
-
     resetCheckboxes();
     // 🔹 페이지 전환 시 스크롤을 맨 위로 이동
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
-
-// function submitChoice(questionIndex, choice) {
-//     if (generatedVideos.length === 0) return;
-    
-//     const videoData = generatedVideos[currentIndex];
-//     const videoTitle = videoData.title;
-
-//     if (!userResponses[videoTitle]) {
-//         userResponses[videoTitle] = { motion: "", sync: "", appearance: "" };
-//     }
-
-//     // 🔥 질문 인덱스에 따라 다른 응답 저장
-//     if (questionIndex === 1) {
-//         userResponses[videoTitle].motion = choice;
-//     } else if (questionIndex === 2) {
-//         userResponses[videoTitle].sync = choice;
-//     } else if (questionIndex === 3) {
-//         userResponses[videoTitle].appearance = choice;
-//     }
-
-//     console.log(`✅ [INFO] ${videoTitle} - Q${questionIndex}: ${choice}`);
-// }
 
 function saveResponsesToGoogleSheets() {
     if (!googleScriptURL) {
@@ -296,18 +265,17 @@ function checkCompletionAndShowResults() {
     for (const videoKey in userResponses) {
         const response = userResponses[videoKey];
 
-        // // 모든 질문에 답변이 되어 있는지 확인
-        // if (!response.motion || !response.sync || !response.appearance) {
-        //     allCompleted = false;
-        //     break;
-        // }
+        // 🔹 응답이 없을 경우 기본값 "Not Answered" 표시
+        const motion = response.motion ? response.motion : "Not Answered";
+        const sync = response.sync ? response.sync : "Not Answered";
+        const appearance = response.appearance ? response.appearance : "Not Answered";
 
         resultsHTML += `
             <tr>
                 <td>${videoKey}</td>
-                <td>${response.motion}</td>
-                <td>${response.sync}</td>
-                <td>${response.appearance}</td>
+                <td>${motion}</td>
+                <td>${sync}</td>
+                <td>${appearance}</td>
             </tr>
         `;
     }
@@ -318,11 +286,8 @@ function checkCompletionAndShowResults() {
     document.getElementById("resultsContainer").style.display = "block";
     document.getElementById("submitSurveyBtn").style.display = "block"; // 🔥 Google Sheets 전송 버튼 표시
     console.log("[INFO] 모든 결과 표시.");
-    // if (allCompleted) {
-    // } else {
-    //     alert("🚨 모든 질문에 답변해야 결과를 확인할 수 있습니다.");
-    // }
 }
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
