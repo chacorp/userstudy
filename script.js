@@ -54,17 +54,18 @@ async function loadVideos() {
 
 // title에서 키워드 다음의 단어 찾기
 function findReferenceTitle(title) {
-    let words = title.split(/\s+/); // 공백 기준으로 단어 분리
+    let parts = title.split("  "); // 띄어쓰기 두 개 기준으로 분리
 
-    for (let i = 0; i < words.length; i++) {
-        if (keywords.includes(words[i]) && i + 1 < words.length) {
-            // 🔹 키워드 다음 단어만 사용 (예: "057 SEN 01" → "057")
-            return words[i + 1].trim();
+    if (parts.length > 1) {
+        let possibleTitle = parts[1].trim(); // 두 번째 단어 추출
+
+        // 🔹 referenceVideos 객체에서 해당 키가 존재하는지 확인
+        if (referenceVideos.hasOwnProperty(possibleTitle)) {
+            return possibleTitle;
         }
     }
     return "";
 }
-
 
 // 동영상 변경
 function changeVideo(direction) {
