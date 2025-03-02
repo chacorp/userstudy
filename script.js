@@ -35,7 +35,7 @@ function restartVideos() {
 function updateVideo() {
     const iframe = document.getElementById('videoFrame');
     iframe.src = videos[currentIndex];
-    iframe.allow = "autoplay; controls; loop";  // ✅ allow 속성 적용
+    iframe.allow = "autoplay; controls; loop; playsinline"; 
 
     document.getElementById('prevBtn').style.display = currentIndex === 0 ? "none" : "inline-block";
     document.getElementById('nextBtn').style.display = currentIndex === videos.length - 1 ? "none" : "inline-block";
