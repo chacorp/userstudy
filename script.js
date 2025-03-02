@@ -15,7 +15,7 @@ async function loadCSV(file) {
 
     return rows.slice(1).map(row => {
         const values = row.split(",").map(value => value.trim()); // ✅ 쉼표 기준으로 데이터 분리
-        console.log(`values: ${values}`);
+        // console.log(`values: ${values}`);
         return Object.fromEntries(headers.map((header, i) => [header, values[i] || ""]));
     });
 }
@@ -113,17 +113,23 @@ function updateVideo() {
     const videoData = generatedVideos[currentIndex];
 
     // 🔹 생성된 비디오 정보 표시
-    document.getElementById("videoTitle").textContent = videoData.title;
-    document.getElementById("generatedTitle").textContent = videoData.title;
-    document.getElementById("generatedLink").textContent = videoData.generatedLink;
-    document.getElementById("generatedVideo").src = videoData.generatedLink;
-    document.getElementById("generatedVideo").allow = "autoplay; controls; loop; playsinline"; 
+    // document.getElementById("videoTitle").textContent = videoData.title;
+    // document.getElementById("generatedTitle").textContent = videoData.title;
+    // document.getElementById("generatedLink").textContent = videoData.generatedLink;
     
+    const generatedVideoFrame = document.getElementById("generatedVideo");
+    generatedVideoFrame.src = videoData.generatedLink;
+    generatedVideoFrame.allow = "autoplay; controls; loop; playsinline"; // ✅ allow 속성 적용
+
+    // 🔹 레퍼런스 비디오 정보 표시
     if (videoData.referenceLink) {
-        document.getElementById("referenceTitle").textContent = videoData.referenceTitle;
-        document.getElementById("referenceLink").textContent = videoData.referenceLink;
-        document.getElementById("referenceVideo").src = videoData.referenceLink;
-        document.getElementById("referenceVideo").allow = "autoplay; controls; loop; playsinline"; 
+        // document.getElementById("referenceTitle").textContent = videoData.referenceTitle;
+        // document.getElementById("referenceLink").textContent = videoData.referenceLink;
+        
+        const referenceVideoFrame = document.getElementById("referenceVideo");
+        referenceVideoFrame.src = videoData.referenceLink;
+        referenceVideoFrame.allow = "autoplay; controls; loop; playsinline"; // ✅ allow 속성 적용
+
         document.getElementById("referenceSection").style.display = "block";
     } else {
         document.getElementById("referenceSection").style.display = "none";
@@ -134,4 +140,6 @@ function updateVideo() {
     document.getElementById("nextBtn").style.display = currentIndex === generatedVideos.length - 1 ? "none" : "inline-block";
     document.getElementById("homeBtn").style.display = currentIndex === generatedVideos.length - 1 ? "inline-block" : "none";
 }
+
+
 document.addEventListener("DOMContentLoaded", initializeData);
