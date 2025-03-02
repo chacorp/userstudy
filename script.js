@@ -114,31 +114,31 @@ function updateVideo() {
 
     // ✅ 요소가 존재하는지 확인 후 설정
     const titleElement = document.getElementById("videoTitle");
-    const generatedTitleElement = document.getElementById("generatedTitle");
-    const generatedLinkElement = document.getElementById("generatedLink");
+    // const generatedTitleElement = document.getElementById("generatedTitle");
+    // const generatedLinkElement = document.getElementById("generatedLink");
     const generatedVideoFrame = document.getElementById("generatedVideo");
 
-    if (!titleElement || !generatedTitleElement || !generatedLinkElement || !generatedVideoFrame) {
-        console.error("❌ [ERROR] 필요한 HTML 요소가 존재하지 않습니다! HTML 구조 확인 필요!");
-        return;
-    }
+    // if (!titleElement || !generatedTitleElement || !generatedLinkElement || !generatedVideoFrame) {
+    //     console.error("❌ [ERROR] 필요한 HTML 요소가 존재하지 않습니다! HTML 구조 확인 필요!");
+    //     return;
+    // }
 
     // 🔹 생성된 비디오 정보 표시
     titleElement.textContent = videoData.title;
-    generatedTitleElement.textContent = videoData.title;
-    generatedLinkElement.textContent = videoData.generatedLink;
+    // generatedTitleElement.textContent = videoData.title;
+    // generatedLinkElement.textContent = videoData.generatedLink;
     generatedVideoFrame.src = videoData.generatedLink;
     generatedVideoFrame.allow = "autoplay; controls; loop; playsinline"; // ✅ allow 속성 적용
 
     // ✅ 레퍼런스 비디오 요소 체크 후 설정
-    const referenceTitleElement = document.getElementById("referenceTitle");
-    const referenceLinkElement = document.getElementById("referenceLink");
+    // const referenceTitleElement = document.getElementById("referenceTitle");
+    // const referenceLinkElement = document.getElementById("referenceLink");
     const referenceVideoFrame = document.getElementById("referenceVideo");
     const referenceSection = document.getElementById("referenceSection");
 
     if (videoData.referenceLink) {
-        if (referenceTitleElement) referenceTitleElement.textContent = videoData.referenceTitle;
-        if (referenceLinkElement) referenceLinkElement.textContent = videoData.referenceLink;
+        // if (referenceTitleElement) referenceTitleElement.textContent = videoData.referenceTitle;
+        // if (referenceLinkElement) referenceLinkElement.textContent = videoData.referenceLink;
         if (referenceVideoFrame) {
             referenceVideoFrame.src = videoData.referenceLink;
             referenceVideoFrame.allow = "autoplay; controls; loop; playsinline"; // ✅ allow 속성 적용
