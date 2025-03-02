@@ -146,7 +146,7 @@ function updateVideo() {
 
     // 생성된 비디오 정보 표시
     // titleElement.textContent = videoData.title;
-    titleElement.textContent = "User Study"
+    titleElement.textContent = (videoData.task === "reenact") ? "Reenact task" : "Dubbing task";
     generatedVideoFrame.src = videoData.generatedLink;
     generatedVideoFrame.allow = "autoplay; controls; loop; playsinline"; // allow 속성 적용
 
