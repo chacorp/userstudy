@@ -6,7 +6,6 @@ let referenceImages = {};
 
 let isInitialized = false; 
 let userResponses = {};
-let new_video = true;
 
 // 특정 키워드 목록 (EC, DE, AE, BE, EB 등)
 const keywords = ["AE", "BE", "CE", "DE", "EA", "EB", "EC", "ED"];
@@ -104,14 +103,7 @@ function updateChoice(questionIndex, choice) {
     const videoKey = videoData.videoKey; // 🔥 `${Mode}-${title}` 사용
 
     if (!userResponses[videoKey]) {
-        userResponses[videoKey] = { motion: "", sync: "", appearance: "" };
-    }
-
-    if (new_video){
-        userResponses[videoKey].motion = 'none';
-        userResponses[videoKey].sync = 'none';
-        userResponses[videoKey].appearance = 'none';
-        new_video = false;
+        userResponses[videoKey] = { motion: "none", sync: "none", appearance: "none" };
     }
 
     // 🔹 같은 질문에서 하나만 선택할 수 있도록 처리
@@ -171,7 +163,6 @@ function changeVideo(direction) {
         currentIndex = generatedVideos.length - 1;
     }
     
-    new_video = true;
     updateVideo();
 }
 
@@ -239,6 +230,24 @@ function updateVideo() {
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+// function saveResponsesToGoogleSheets() {
+//     if (!googleScriptURL) {
+//         alert("🚨 Google Apps Script URL을 입력하세요!");
+//         return;
+//     }
+
+//     fetch(googleScriptURL, {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify(userResponses)
+//     })
+//     .then(response => response.text())
+//     .then(data => {
+//         console.log("✅ 응답 저장 완료:", data);
+//         alert("설문 응답이 저장되었습니다!");
+//     })
+//     .catch(error => console.error("❌ 오류 발생:", error));
+// }
 function saveResponsesToGoogleSheets() {
     if (!googleScriptURL) {
         alert("🚨 Google Apps Script URL을 입력하세요!");
@@ -248,15 +257,17 @@ function saveResponsesToGoogleSheets() {
     fetch(googleScriptURL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        mode: "no-cors", // 🔥 CORS 문제 해결을 위한 설정
         body: JSON.stringify(userResponses)
     })
-    .then(response => response.text())
-    .then(data => {
-        console.log("✅ 응답 저장 완료:", data);
-        alert("설문 응답이 저장되었습니다!");
+    .then(response => {
+        console.log("✅ 응답 저장 완료 (CORS 무시):", response);
+        alert("설문 응답이 저장되었습니다! (CORS 무시)");
     })
     .catch(error => console.error("❌ 오류 발생:", error));
 }
+
+
 
 function checkCompletionAndShowResults() {
     let allCompleted = true;
