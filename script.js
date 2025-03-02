@@ -46,7 +46,7 @@ async function initializeData() {
         }
     });
 
-    console.log("📌 [INFO] videos.csv 데이터 로드 시작");
+    // console.log("📌 [INFO] videos.csv 데이터 로드 시작");
     const genData = await loadCSV("videos.csv");
 
     generatedVideos = []; // 기존 데이터 초기화 후 저장
@@ -62,9 +62,9 @@ async function initializeData() {
         let referenceTitle = findReferenceTitle(title);
         let referenceLink = referenceVideos[referenceTitle] || "";
 
-        console.log(`▶ [INFO] 찾은 비디오: ${title}`);
-        console.log(`  - 🎥 생성된 비디오 링크: ${embeddedLink}`);
-        console.log(`  - 🔗 매칭된 레퍼런스: ${referenceTitle} → ${referenceLink || "없음"}`);
+        // console.log(`▶ [INFO] 찾은 비디오: ${title}`);
+        // console.log(`  - 🎥 생성된 비디오 링크: ${embeddedLink}`);
+        // console.log(`  - 🔗 매칭된 레퍼런스: ${referenceTitle} → ${referenceLink || "없음"}`);
 
         // 리스트에 추가
         generatedVideos.push({ title, generatedLink: embeddedLink, referenceTitle, referenceLink });
