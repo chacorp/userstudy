@@ -31,15 +31,15 @@
 
 
         <div>
-            <h3>Which video shows the motion similar to the reference video? </h3>
-            <button onclick="submitChoice(1, 'A')">A (left video)</button>
-            <button onclick="submitChoice(1, 'B')">B (right video)</button>
+            <h3>Which video shows the motion similar to the reference video?</h3>
+            <label><input type="checkbox" id="motionA" onchange="updateChoice(this, 1, 'A')"> A (left video)</label>
+            <label><input type="checkbox" id="motionB" onchange="updateChoice(this, 1, 'B')"> B (right video)</label>
         </div>
         
         <div>
-            <h3>Which video syncs lip movement accurately with audio? </h3>
-            <button onclick="submitChoice(2, 'A')">A (left video)</button>
-            <button onclick="submitChoice(2, 'B')">B (right video)</button>
+            <h3>Which video syncs lip movement accurately with audio?</h3>
+            <label><input type="checkbox" id="syncA" onchange="updateChoice(this, 2, 'A')"> A (left video)</label>
+            <label><input type="checkbox" id="syncB" onchange="updateChoice(this, 2, 'B')"> B (right video)</label>
         </div>
         
         <h3>Reference Image</h3>
@@ -48,9 +48,9 @@
         </div>
         
         <div>
-            <h3>Which video shows the appearance similar to the reference image? </h3>
-            <button onclick="submitChoice(3, 'A')">A (left video)</button>
-            <button onclick="submitChoice(3, 'B')">B (right video)</button>
+            <h3>Which video shows the appearance similar to the reference image?</h3>
+            <label><input type="checkbox" id="appearanceA" onchange="updateChoice(this, 3, 'A')"> A (left video)</label>
+            <label><input type="checkbox" id="appearanceB" onchange="updateChoice(this, 3, 'B')"> B (right video)</label>
         </div>
         
         <div class="buttons">
@@ -58,6 +58,7 @@
             <button id="nextBtn" class="nav-btn" onclick="changeVideo(1)">next ▶</button>
             <button onclick="saveResponsesToGoogleSheets()">📤 Submit Responses</button>
         </div>
+        
 
 
         <button id="homeBtn" class="home-btn" onclick="restartVideos()" style="display: none;">처음으로 ↺</button>
