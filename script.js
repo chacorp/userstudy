@@ -4,6 +4,7 @@ let currentIndex = 0;
 let googleScriptURL = localStorage.getItem("googleScriptURL") || ""; // 🔥 `let`으로 변경
 let referenceImages = {};
 
+let isInitialized = false; 
 let userResponses = {};
 
 // 특정 키워드 목록 (EC, DE, AE, BE, EB 등)
@@ -26,20 +27,26 @@ async function loadCSV(file) {
 }
 
 async function initializeData() {
+    if (isInitialized) {
+        console.log("⚠️ [INFO] initializeData()가 이미 실행되었음. 재실행 방지.");
+        return; // 🔥 이미 실행되었다면 다시 실행되지 않도록 차단
+    }
+
+    console.log("📌 [INFO] 데이터 로딩 시작...");
+    isInitialized = true; // 🔥 처음 실행되면 플래그 설정
+    
     userResponses = {};
 
     if (!referenceVideos) {
-        console.log("📌 [INFO] reference.csv 데이터 로드 시작");
-        const refData = await loadCSV("reference.csv");
-
-        referenceVideos = {};  // referenceVideos가 비어 있을 때만 로드
+        console.log("📌 [INFO] reference.csv 데이터 로딩...");
+        const refData = loadCSV("reference.csv"); 
+        referenceVideos = {};
         refData.forEach(video => {
             if (video.title && video["Embedded link"]) {
                 referenceVideos[video.title.trim()] = video["Embedded link"].trim();
             }
         });
-
-        console.log("[DEBUG] referenceVideos 로드 완료:", Object.keys(referenceVideos));
+        // console.log("[INFO] referenceVideos 로드 완료:", referenceVideos);
     }
 
     // ref-image.csv 로드 & Google Drive 이미지 URL 변환
@@ -51,10 +58,11 @@ async function initializeData() {
             referenceImages[image.title.trim()] = image["root link"].trim();
         }
     });
-    console.log("✅ [SUCCESS] referenceImages 로드 완료:", referenceImages);
+    // console.log("[INFO] referenceImages 로드 완료:", referenceImages);
 
-    const genData = await loadCSV("reenact.csv");
-    generatedVideos = []; // 기존 데이터 초기화 후 저장
+    const genData = loadCSV("reenact.csv");
+    generatedVideos = [];
+
     genData.forEach(video => {
         if (!video.title || !video["Embedded link"]) {
             return;
@@ -76,15 +84,15 @@ async function initializeData() {
         generatedVideos.push({ title, mode, videoKey, generatedLink: embeddedLink, referenceTitle, referenceLink, referenceImage, task });
     });
 
-
-    console.log("[INFO] 총", generatedVideos.length, "개의 비디오 데이터가 로드됨");
-
     if (generatedVideos.length > 0) {
         currentIndex = 0;
         updateVideo();
     } else {
         console.error("[ERROR] 로드된 비디오가 없습니다!");
     }
+
+    localStorage.setItem("generatedVideos", JSON.stringify(generatedVideos));
+    console.log("[INFO] 총", generatedVideos.length, "개의 비디오 데이터가 로드됨");
 }
 
 
@@ -191,7 +199,7 @@ function updateVideo() {
 
     // 생성된 비디오 정보 표시
     // titleElement.textContent = videoData.title;
-    titleElement.textContent = (videoData.task === "reenact") ? "Reenact task" : "Dubbing task";
+    titleElement.textContent = (videoData.task === "reenact") ? `${currentIndex} Reenact task` : `${currentIndex} Dubbing task`;
     generatedVideoFrame.src = videoData.generatedLink;
     generatedVideoFrame.allow = "autoplay; controls; loop; playsinline"; // allow 속성 적용
 
