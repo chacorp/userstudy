@@ -113,9 +113,9 @@ function updateVideo() {
     const videoData = generatedVideos[currentIndex];
 
     // 🔹 생성된 비디오 정보 표시
-    // document.getElementById("videoTitle").textContent = videoData.title;
-    // document.getElementById("generatedTitle").textContent = videoData.title;
-    // document.getElementById("generatedLink").textContent = videoData.generatedLink;
+    document.getElementById("videoTitle").textContent = videoData.title;
+    document.getElementById("generatedTitle").textContent = videoData.title;
+    document.getElementById("generatedLink").textContent = videoData.generatedLink;
     
     const generatedVideoFrame = document.getElementById("generatedVideo");
     generatedVideoFrame.src = videoData.generatedLink;
@@ -123,8 +123,8 @@ function updateVideo() {
 
     // 🔹 레퍼런스 비디오 정보 표시
     if (videoData.referenceLink) {
-        // document.getElementById("referenceTitle").textContent = videoData.referenceTitle;
-        // document.getElementById("referenceLink").textContent = videoData.referenceLink;
+        document.getElementById("referenceTitle").textContent = videoData.referenceTitle;
+        document.getElementById("referenceLink").textContent = videoData.referenceLink;
         
         const referenceVideoFrame = document.getElementById("referenceVideo");
         referenceVideoFrame.src = videoData.referenceLink;
