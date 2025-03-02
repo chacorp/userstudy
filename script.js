@@ -79,7 +79,7 @@ async function initializeData() {
         let referenceTitle = findReferenceTitle(title);
         let referenceLink = referenceVideos[referenceTitle] || "";
         // let referenceImage = referenceImages[tgt] || ""; 
-        let referenceImage = (`${task}` === "reenact") ? referenceImages[title] : referenceImages[tgt];
+        let referenceImage = (`${task}` === "reenact") ? referenceImages[tgt] : referenceImages[title];
         // console.log(`📌 [INFO] referenceImage ${tgt}: ${referenceImages[tgt]}`);
         
         if (!userResponses[videoKey]) {
