@@ -69,8 +69,11 @@ async function initializeData() {
         }
 
         const title = video.title.trim();
-        const mode = video.Mode.trim(); // 🔥 Mode 값 추가
-        const videoKey = `${mode}-${title}`; // 🔥 고유 Key 생성
+        const mode = video.Mode.trim();
+        const task = video.task.trim();
+        const tgt = video.tgt.trim();
+        const videoKey = `${mode}-${title}-${task}-${tgt}`; // 🔥 고유 Key 생성
+        
         const embeddedLink = video["Embedded link"].trim();
         const tgt = video.tgt.trim();
 
