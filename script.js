@@ -6,6 +6,7 @@ let currentIndex = 0;
 const keywords = ["AE", "BE", "CE", "DE", "EA", "EB", "EC", "ED"];
 
 // CSV 파일을 읽어와 JSON으로 변환하는 함수
+// CSV 파일을 읽어 JSON으로 변환하는 함수
 async function loadCSV(file) {
     const response = await fetch(file);
     const data = await response.text();
@@ -32,12 +33,12 @@ async function loadVideos() {
         const title = video.title.trim();
         const embeddedLink = video["Embedded link"].trim();
         
-        // 레퍼런스 비디오 찾기 (title에서 특정 키워드 다음의 텍스트 추출)
+        // 🔹 키워드 이후의 reference title 추출 (1단어만 사용)
         let referenceTitle = findReferenceTitle(title);
         let referenceLink = referenceVideos[referenceTitle] || "";
 
         // 리스트에 추가
-        generatedVideos.push({ title, generatedLink: embeddedLink, referenceLink });
+        generatedVideos.push({ title, generatedLink: embeddedLink, referenceTitle, referenceLink });
     });
 
     if (generatedVideos.length > 0) {
@@ -46,17 +47,19 @@ async function loadVideos() {
     }
 }
 
-// title에서 키워드 다음의 비디오 코드 찾기
+// title에서 키워드 다음의 단어 찾기
 function findReferenceTitle(title) {
-    let words = title.split(" ");
+    let words = title.split(/\s+/); // 공백 기준으로 단어 분리
+
     for (let i = 0; i < words.length; i++) {
-        if (keywords.includes(words[i])) {
-            // 키워드 다음의 단어들을 조합하여 레퍼런스 title 찾기
-            return words.slice(i + 1, i + 4).join(" ").trim(); // 보통 3개 단어 조합 (예: "057 SEN 01")
+        if (keywords.includes(words[i]) && i + 1 < words.length) {
+            // 🔹 키워드 다음 단어만 사용 (예: "057 SEN 01" → "057")
+            return words[i + 1].trim();
         }
     }
     return "";
 }
+
 
 // 동영상 변경
 function changeVideo(direction) {
