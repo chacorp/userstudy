@@ -259,15 +259,13 @@ function saveResponsesToGoogleSheets() {
     fetch(googleScriptURL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        mode: "no-cors", // 🔥 CORS 문제 해결을 위한 설정
         body: JSON.stringify(userResponses)
     })
     .then(response => {
-        console.log("✅ 응답 저장 완료 (CORS 무시):", response);
-        alert("설문 응답이 저장되었습니다! (CORS 무시)");
+        alert("설문 응답이 제출되었습니다!");
     })
     .catch(error => {
-        console.error("❌ 오류 발생:", error);
+        console.error("앗 제출 ❌ 오류;;;", error);
         showFailureMessage();
     });
 }
