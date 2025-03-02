@@ -25,11 +25,13 @@ body {
 
 .video-container.reference {
     width: 100%;
+    max-width: 500px; /* Reference Video 1:1 비율 */
     aspect-ratio: 1 / 1;
 }
 
 .video-container.generated {
     width: 100%;
+    max-width: 800px; /* Generated Video 2:1 비율 */
     aspect-ratio: 2 / 1;
 }
 
