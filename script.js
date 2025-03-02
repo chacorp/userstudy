@@ -3,6 +3,7 @@ let generatedVideos = [];    // videos.csv에서 불러온 데이터 저장
 let currentIndex = 0;
 let googleScriptURL = localStorage.getItem("googleScriptURL") || ""; // 🔥 `let`으로 변경
 let referenceImages = {};
+
 let userResponses = {};
 
 // 특정 키워드 목록 (EC, DE, AE, BE, EB 등)
@@ -60,6 +61,8 @@ async function initializeData() {
         }
 
         const title = video.title.trim();
+        const mode = video.Mode.trim(); // 🔥 Mode 값 추가
+        const videoKey = `${mode}-${title}`; // 🔥 고유 Key 생성
         const embeddedLink = video["Embedded link"].trim();
         const tgt = video.tgt.trim();
 
@@ -70,7 +73,7 @@ async function initializeData() {
         let referenceImage = referenceImages[tgt] || ""; 
         console.log(`📌 [INFO] referenceImage ${tgt}: ${referenceImages[tgt]}`);
 
-        generatedVideos.push({ title, generatedLink: embeddedLink, referenceTitle, referenceLink, referenceImage, task });
+        generatedVideos.push({ title, mode, videoKey, generatedLink: embeddedLink, referenceTitle, referenceLink, referenceImage, task });
     });
 
 
@@ -83,6 +86,38 @@ async function initializeData() {
         console.error("[ERROR] 로드된 비디오가 없습니다!");
     }
 }
+
+
+function updateChoice(questionIndex, choice) {
+    if (generatedVideos.length === 0) return;
+    
+    const videoData = generatedVideos[currentIndex];
+    const videoKey = videoData.videoKey; // 🔥 `${Mode}-${title}` 사용
+
+    if (!userResponses[videoKey]) {
+        userResponses[videoKey] = { motion: "", sync: "", appearance: "" };
+    }
+
+    // 🔹 같은 질문에서 하나만 선택할 수 있도록 처리
+    if (questionIndex === 1) {
+        userResponses[videoKey].motion = choice;
+        document.getElementById("motionA").checked = (choice === 'A');
+        document.getElementById("motionB").checked = (choice === 'B');
+    } else if (questionIndex === 2) {
+        userResponses[videoKey].sync = choice;
+        document.getElementById("syncA").checked = (choice === 'A');
+        document.getElementById("syncB").checked = (choice === 'B');
+    } else if (questionIndex === 3) {
+        userResponses[videoKey].appearance = choice;
+        document.getElementById("appearanceA").checked = (choice === 'A');
+        document.getElementById("appearanceB").checked = (choice === 'B');
+    }
+
+    console.log(`✅ [INFO] ${videoKey} - Q${questionIndex}: ${choice}`);
+}
+
+
+
 
 function saveGoogleScriptURL() {
     const inputURL = document.getElementById("googleScriptURL").value.trim();
@@ -123,6 +158,15 @@ function changeVideo(direction) {
     updateVideo();
 }
 
+function resetCheckboxes() {
+    document.getElementById("motionA").checked = false;
+    document.getElementById("motionB").checked = false;
+    document.getElementById("syncA").checked = false;
+    document.getElementById("syncB").checked = false;
+    document.getElementById("appearanceA").checked = false;
+    document.getElementById("appearanceB").checked = false;
+}
+
 // 처음으로 버튼 클릭 시 첫 영상으로 이동
 function restartVideos() {
     if (generatedVideos.length === 0) return;
@@ -140,6 +184,7 @@ function updateVideo() {
 
     // get video
     const videoData = generatedVideos[currentIndex];
+    const videoKey = videoData.videoKey; // `${Mode}-${title}` 사용
     const titleElement = document.getElementById("videoTitle");
     const generatedVideoFrame = document.getElementById("generatedVideo");
 
@@ -171,29 +216,41 @@ function updateVideo() {
     if (prevBtn) prevBtn.style.display = currentIndex === 0 ? "none" : "inline-block";
     if (nextBtn) nextBtn.style.display = currentIndex === generatedVideos.length - 1 ? "none" : "inline-block";
     if (homeBtn) homeBtn.style.display = currentIndex === generatedVideos.length - 1 ? "inline-block" : "none";
+
+    if (userResponses[videoKey]) {
+        document.getElementById("motionA").checked = (userResponses[videoKey].motion === 'A');
+        document.getElementById("motionB").checked = (userResponses[videoKey].motion === 'B');
+        document.getElementById("syncA").checked = (userResponses[videoKey].sync === 'A');
+        document.getElementById("syncB").checked = (userResponses[videoKey].sync === 'B');
+        document.getElementById("appearanceA").checked = (userResponses[videoKey].appearance === 'A');
+        document.getElementById("appearanceB").checked = (userResponses[videoKey].appearance === 'B');
+    }
+
+    // 🔹 페이지 전환 시 스크롤을 맨 위로 이동
+    window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function submitChoice(questionIndex, choice) {
-    if (generatedVideos.length === 0) return;
+// function submitChoice(questionIndex, choice) {
+//     if (generatedVideos.length === 0) return;
     
-    const videoData = generatedVideos[currentIndex];
-    const videoTitle = videoData.title;
+//     const videoData = generatedVideos[currentIndex];
+//     const videoTitle = videoData.title;
 
-    if (!userResponses[videoTitle]) {
-        userResponses[videoTitle] = { motion: "", sync: "", appearance: "" };
-    }
+//     if (!userResponses[videoTitle]) {
+//         userResponses[videoTitle] = { motion: "", sync: "", appearance: "" };
+//     }
 
-    // 🔥 질문 인덱스에 따라 다른 응답 저장
-    if (questionIndex === 1) {
-        userResponses[videoTitle].motion = choice;
-    } else if (questionIndex === 2) {
-        userResponses[videoTitle].sync = choice;
-    } else if (questionIndex === 3) {
-        userResponses[videoTitle].appearance = choice;
-    }
+//     // 🔥 질문 인덱스에 따라 다른 응답 저장
+//     if (questionIndex === 1) {
+//         userResponses[videoTitle].motion = choice;
+//     } else if (questionIndex === 2) {
+//         userResponses[videoTitle].sync = choice;
+//     } else if (questionIndex === 3) {
+//         userResponses[videoTitle].appearance = choice;
+//     }
 
-    console.log(`✅ [INFO] ${videoTitle} - Q${questionIndex}: ${choice}`);
-}
+//     console.log(`✅ [INFO] ${videoTitle} - Q${questionIndex}: ${choice}`);
+// }
 
 function saveResponsesToGoogleSheets() {
     if (!googleScriptURL) {
