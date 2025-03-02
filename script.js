@@ -1,7 +1,7 @@
 let referenceVideos = null;  // reference.csv 데이터를 한 번만 로드하도록 설정
 let generatedVideos = [];    // videos.csv에서 불러온 데이터 저장
 let currentIndex = 0;
-const googleScriptURL = "YOUR_GOOGLE_APPS_SCRIPT_URL";
+let googleScriptURL = null;
 
 // 특정 키워드 목록 (EC, DE, AE, BE, EB 등)
 const keywords = ["AE", "BE", "CE", "DE", "EA", "EB", "EC", "ED"];
