@@ -79,7 +79,11 @@ async function initializeData() {
         let referenceTitle = findReferenceTitle(title);
         let referenceLink = referenceVideos[referenceTitle] || "";
         let referenceImage = referenceImages[tgt] || ""; 
-        console.log(`📌 [INFO] referenceImage ${tgt}: ${referenceImages[tgt]}`);
+        // console.log(`📌 [INFO] referenceImage ${tgt}: ${referenceImages[tgt]}`);
+        
+        if (!userResponses[videoKey]) {
+            userResponses[videoKey] = { motion: "none", sync: "none", appearance: "none" };
+        }
 
         generatedVideos.push({ title, mode, task, tgt, videoKey, generatedLink: embeddedLink, referenceTitle, referenceLink, referenceImage });
     });
@@ -102,9 +106,9 @@ function updateChoice(questionIndex, choice) {
     const videoData = generatedVideos[currentIndex];
     const videoKey = videoData.videoKey; // 🔥 `${Mode}-${title}` 사용
 
-    if (!userResponses[videoKey]) {
-        userResponses[videoKey] = { motion: "none", sync: "none", appearance: "none" };
-    }
+    // if (!userResponses[videoKey]) {
+    //     userResponses[videoKey] = { motion: "none", sync: "none", appearance: "none" };
+    // }
 
     // 🔹 같은 질문에서 하나만 선택할 수 있도록 처리
     if (questionIndex === 1) {
