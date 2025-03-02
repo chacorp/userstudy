@@ -1,5 +1,5 @@
 let generatedVideos = [];  // videos.csv 데이터
-let referenceVideos = {};  // reference.csv 데이터 (title → Embedded link 매핑)
+let referenceVideos = {};  // references.csv 데이터 (title → Embedded link 매핑)
 let currentIndex = 0;
 
 // 특정 키워드 목록 (EC, DE, AE, BE, EB 등)
@@ -11,7 +11,7 @@ async function loadCSV(file) {
     const response = await fetch(file);
     const data = await response.text();
     const rows = data.split("\n").map(row => row.trim()).filter(row => row);
-    const headers = rows[0].split("\t"); // TSV 형식으로 구분
+    const headers = rows[0].split("\t"); // TSV 형식
     return rows.slice(1).map(row => {
         const values = row.split("\t");
         return Object.fromEntries(headers.map((header, i) => [header, values[i]]));
