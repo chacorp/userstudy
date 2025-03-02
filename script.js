@@ -1,68 +1,78 @@
-let generatedVideos = [];  // videos.csv 데이터
-let referenceVideos = {};  // references.csv 데이터 (title → Embedded link 매핑)
+let referenceVideos = null;  // reference.csv 데이터를 한 번만 로드하도록 설정
+let generatedVideos = [];    // videos.csv에서 불러온 데이터 저장
 let currentIndex = 0;
 
 // 특정 키워드 목록 (EC, DE, AE, BE, EB 등)
 const keywords = ["AE", "BE", "CE", "DE", "EA", "EB", "EC", "ED"];
 
-// CSV 파일을 읽어와 JSON으로 변환하는 함수
 // CSV 파일을 읽어 JSON으로 변환하는 함수
 async function loadCSV(file) {
     const response = await fetch(file);
     const data = await response.text();
     const rows = data.split("\n").map(row => row.trim()).filter(row => row);
-    const headers = rows[0].split("\t"); // TSV 형식
+    const headers = rows[0].split("\t"); // TSV 형식으로 구분
     return rows.slice(1).map(row => {
         const values = row.split("\t");
-        return Object.fromEntries(headers.map((header, i) => [header, values[i]]));
+        return Object.fromEntries(headers.map((header, i) => [header, values[i] || ""])); // 값이 없을 경우 빈 문자열 할당
     });
 }
 
-// videos.csv + reference.csv 로드
-async function loadVideos() {
-    const refData = await loadCSV("reference.csv");
+async function initializeData() {
+    if (!referenceVideos) {
+        console.log("📌 [INFO] reference.csv 데이터 로드 시작");
+        const refData = await loadCSV("reference.csv");
+
+        referenceVideos = {};  // referenceVideos가 비어 있을 때만 로드
+        refData.forEach(video => {
+            if (video.title && video["Embedded link"]) {
+                referenceVideos[video.title.trim()] = video["Embedded link"].trim();
+            }
+        });
+
+        console.log("[DEBUG] referenceVideos 로드 완료:", Object.keys(referenceVideos));
+    }
+
+    console.log("📌 [INFO] videos.csv 데이터 로드 시작");
     const genData = await loadCSV("videos.csv");
 
-    // reference.csv에서 title → Embedded link 매핑
-    refData.forEach(video => {
-        referenceVideos[video.title.trim()] = video["Embedded link"].trim();
-    });
-
-    // videos.csv에서 title, Embedded link 저장
+    generatedVideos = []; // 기존 데이터 초기화 후 저장
     genData.forEach(video => {
+        if (!video.title || !video["Embedded link"]) {
+            console.warn("[WARN] videos.csv에서 잘못된 데이터 발견:", video);
+            return;
+        }
+
         const title = video.title.trim();
         const embeddedLink = video["Embedded link"].trim();
-        
-        // 🔹 키워드 이후의 reference title 추출 (1단어만 사용)
+
         let referenceTitle = findReferenceTitle(title);
         let referenceLink = referenceVideos[referenceTitle] || "";
 
-        console.log(`▶ 찾은 비디오: ${title}`);
-        console.log(`  - Embedded Link: ${embeddedLink}`);
-        console.log(`  - 매칭된 레퍼런스: ${referenceTitle} → ${referenceLink || "없음"}`);
+        console.log(`▶ [INFO] 찾은 비디오: ${title}`);
+        console.log(`  - 🎥 생성된 비디오 링크: ${embeddedLink}`);
+        console.log(`  - 🔗 매칭된 레퍼런스: ${referenceTitle} → ${referenceLink || "없음"}`);
 
         // 리스트에 추가
         generatedVideos.push({ title, generatedLink: embeddedLink, referenceTitle, referenceLink });
     });
 
+    console.log("[INFO] 총", generatedVideos.length, "개의 비디오 데이터가 로드됨");
+
     if (generatedVideos.length > 0) {
         currentIndex = 0;
         updateVideo();
+    } else {
+        console.error("[ERROR] 로드된 비디오가 없습니다!");
     }
 }
 
-
 // title에서 키워드 다음의 단어 찾기
 function findReferenceTitle(title) {
-    let parts = title.split("  "); // 띄어쓰기 두 개 기준으로 분리
+    let trimmedTitle = title.trim(); // 앞뒤 공백 제거
 
-    if (parts.length > 1 && parts[1]) {
-        let possibleTitle = parts[1].trim(); // 두 번째 단어 추출
-
-        // 🔹 referenceVideos 객체에서 해당 키가 존재하는지 확인
-        if (possibleTitle in referenceVideos) {
-            return possibleTitle;
-        }
+    // 🔹 referenceVideos 객체에서 해당 title이 있는지 확인
+    if (trimmedTitle in referenceVideos) {
+        return trimmedTitle;
     }
     return "";
 }
@@ -70,6 +80,8 @@ function findReferenceTitle(title) {
 
 // 동영상 변경
 function changeVideo(direction) {
+    if (generatedVideos.length === 0) return;
+
     currentIndex += direction;
 
     if (currentIndex < 0) currentIndex = 0;
@@ -82,27 +94,41 @@ function changeVideo(direction) {
 
 // 처음으로 버튼 클릭 시 첫 영상으로 이동
 function restartVideos() {
+    if (generatedVideos.length === 0) return;
+
     currentIndex = 0;
     updateVideo();
 }
 
-// iframe 업데이트 및 버튼 상태 변경
+
 function updateVideo() {
+    if (generatedVideos.length === 0) {
+        console.error("❌ [ERROR] 업데이트할 비디오가 없습니다!");
+        return;
+    }
+
     const videoData = generatedVideos[currentIndex];
-    
-    document.getElementById("referenceVideo").src = videoData.referenceLink || "";
-    document.getElementById("referenceVideo").allow = "autoplay; controls; loop; playsinline"; 
-    document.getElementById("referenceTitle").textContent = videoData.referenceTitle;
-    document.getElementById("referenceLink").textContent = videoData.referenceLink;
-    
-    document.getElementById("generatedVideo").src = videoData.generatedLink;
-    document.getElementById("generatedVideo").allow = "autoplay; controls; loop; playsinline"; 
+
+    // 🔹 생성된 비디오 정보 표시
+    document.getElementById("videoTitle").textContent = videoData.title;
     document.getElementById("generatedTitle").textContent = videoData.title;
     document.getElementById("generatedLink").textContent = videoData.generatedLink;
+    document.getElementById("generatedVideo").src = videoData.generatedLink;
+    document.getElementById("generatedVideo").allow = "autoplay; controls; loop; playsinline"; 
+    
+    if (videoData.referenceLink) {
+        document.getElementById("referenceTitle").textContent = videoData.referenceTitle;
+        document.getElementById("referenceLink").textContent = videoData.referenceLink;
+        document.getElementById("referenceVideo").src = videoData.referenceLink;
+        document.getElementById("referenceVideo").allow = "autoplay; controls; loop; playsinline"; 
+        document.getElementById("referenceSection").style.display = "block";
+    } else {
+        document.getElementById("referenceSection").style.display = "none";
+    }
 
+    // 버튼 상태 업데이트
     document.getElementById("prevBtn").style.display = currentIndex === 0 ? "none" : "inline-block";
     document.getElementById("nextBtn").style.display = currentIndex === generatedVideos.length - 1 ? "none" : "inline-block";
     document.getElementById("homeBtn").style.display = currentIndex === generatedVideos.length - 1 ? "inline-block" : "none";
 }
-
-document.addEventListener("DOMContentLoaded", loadVideos);
+document.addEventListener("DOMContentLoaded", initializeData);
