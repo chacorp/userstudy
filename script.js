@@ -2,6 +2,7 @@ let referenceVideos = null;  // reference.csv 데이터를 한 번만 로드하�
 let generatedVideos = [];    // videos.csv에서 불러온 데이터 저장
 let currentIndex = 0;
 let googleScriptURL = localStorage.getItem("googleScriptURL") || ""; // 🔥 `let`으로 변경
+let referenceImages = {};
 
 // 특정 키워드 목록 (EC, DE, AE, BE, EB 등)
 const keywords = ["AE", "BE", "CE", "DE", "EA", "EB", "EC", "ED"];
@@ -39,13 +40,9 @@ async function initializeData() {
 
     // ref-image.csv 로드 & Google Drive 이미지 URL 변환
     const refImageData = await loadCSV("ref-image.csv");
-    let referenceImages = {};
     refImageData.forEach(image => {
         if (image.tgt && image["Embedded link"]) {
-            let fileId = image["Embedded link"].match(/[-\w]{25,}/); // FILE_ID 추출
-            if (fileId) {
-                referenceImages[image.tgt.trim()] = `https://drive.google.com/uc?id=${fileId[0]}`;
-            }
+            referenceImages[image.tgt.trim()] = `https://drive.google.com/uc?id=${image["Embedded link"].trim()}`;
         }
     });
 
