@@ -56,16 +56,17 @@ async function loadVideos() {
 function findReferenceTitle(title) {
     let parts = title.split("  "); // 띄어쓰기 두 개 기준으로 분리
 
-    if (parts.length > 1) {
+    if (parts.length > 1 && parts[1]) {
         let possibleTitle = parts[1].trim(); // 두 번째 단어 추출
 
         // 🔹 referenceVideos 객체에서 해당 키가 존재하는지 확인
-        if (referenceVideos.hasOwnProperty(possibleTitle)) {
+        if (possibleTitle in referenceVideos) {
             return possibleTitle;
         }
     }
     return "";
 }
+
 
 // 동영상 변경
 function changeVideo(direction) {
