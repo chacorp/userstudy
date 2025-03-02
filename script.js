@@ -37,6 +37,15 @@ async function initializeData() {
         console.log("[DEBUG] referenceVideos 로드 완료:", Object.keys(referenceVideos));
     }
 
+    // 🔹 ref-image.csv 로드
+    const refImageData = await loadCSV("ref-image.csv");
+    let referenceImages = {};
+    refImageData.forEach(image => {
+        if (image.tgt && image["Embedded link"]) {
+            referenceImages[image.tgt.trim()] = image["Embedded link"].trim();
+        }
+    });
+
     console.log("📌 [INFO] videos.csv 데이터 로드 시작");
     const genData = await loadCSV("videos.csv");
 
@@ -138,11 +147,19 @@ function updateVideo() {
     generatedVideoFrame.allow = "autoplay; controls; loop; playsinline"; // allow 속성 적용
 
     const referenceVideoFrame = document.getElementById("referenceVideo");
-    const referenceSection = document.getElementById("referenceSection");
+    // const referenceSection = document.getElementById("referenceSection");
 
     referenceVideoFrame.src = videoData.referenceLink;
     referenceVideoFrame.allow = "autoplay; controls; loop; playsinline"; // allow 속성 적용
 
+    const referenceImage = document.getElementById("referenceImage");
+    if (videoData.referenceImage) {
+        referenceImage.src = videoData.referenceImage;
+        referenceImage.style.display = "block";
+    } else {
+        referenceImage.style.display = "none";
+    }
+    
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
     const homeBtn = document.getElementById("homeBtn");
