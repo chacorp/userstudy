@@ -22,11 +22,7 @@
             <iframe id="referenceVideo" frameborder="0" allowfullscreen></iframe>
         </div>
         
-        <h3>Reference Image</h3>
-        <div class="image-container">
-            <img id="referenceImage" src="" alt="Reference Image" style="display: none;">
-        </div>
-        
+
         <h3>Generated Video</h3>
         <div class="video-container generated">
             <iframe id="generatedVideo" frameborder="0" allowfullscreen></iframe>
@@ -36,14 +32,33 @@
 
         <div>
             <h3>Which video shows the motion similar to the reference video? </h3>
-            <button id="choiceA" onclick="submitChoice('A')">A (left video)</button>
-            <button id="choiceB" onclick="submitChoice('B')">B (right video)</button>
+            <button onclick="submitChoice(1, 'A')">A (left video)</button>
+            <button onclick="submitChoice(1, 'B')">B (right video)</button>
         </div>
-
+        
+        <div>
+            <h3>Which video syncs lip movement accurately with audio? </h3>
+            <button onclick="submitChoice(2, 'A')">A (left video)</button>
+            <button onclick="submitChoice(2, 'B')">B (right video)</button>
+        </div>
+        
+        <h3>Reference Image</h3>
+        <div class="image-container">
+            <img id="referenceImage" src="" alt="Reference Image" style="display: none;">
+        </div>
+        
+        <div>
+            <h3>Which video shows the appearance similar to the reference image? </h3>
+            <button onclick="submitChoice(3, 'A')">A (left video)</button>
+            <button onclick="submitChoice(3, 'B')">B (right video)</button>
+        </div>
+        
         <div class="buttons">
             <button id="prevBtn" class="nav-btn" onclick="changeVideo(-1)">◀ prev</button>
             <button id="nextBtn" class="nav-btn" onclick="changeVideo(1)">next ▶</button>
+            <button onclick="saveResponsesToGoogleSheets()">📤 Submit Responses</button>
         </div>
+
 
         <button id="homeBtn" class="home-btn" onclick="restartVideos()" style="display: none;">처음으로 ↺</button>
     </div>

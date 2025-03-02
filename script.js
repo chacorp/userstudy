@@ -3,6 +3,7 @@ let generatedVideos = [];    // videos.csv에서 불러온 데이터 저장
 let currentIndex = 0;
 let googleScriptURL = localStorage.getItem("googleScriptURL") || ""; // 🔥 `let`으로 변경
 let referenceImages = {};
+let userResponses = {};
 
 // 특정 키워드 목록 (EC, DE, AE, BE, EB 등)
 const keywords = ["AE", "BE", "CE", "DE", "EA", "EB", "EC", "ED"];
@@ -24,6 +25,8 @@ async function loadCSV(file) {
 }
 
 async function initializeData() {
+    userResponses = {};
+
     if (!referenceVideos) {
         console.log("📌 [INFO] reference.csv 데이터 로드 시작");
         const refData = await loadCSV("reference.csv");
@@ -170,34 +173,43 @@ function updateVideo() {
     if (homeBtn) homeBtn.style.display = currentIndex === generatedVideos.length - 1 ? "inline-block" : "none";
 }
 
-function submitChoice(choice) {
+function submitChoice(questionIndex, choice) {
     if (generatedVideos.length === 0) return;
+    
     const videoData = generatedVideos[currentIndex];
+    const videoTitle = videoData.title;
 
-    // 🔥 Google Sheets에 데이터 전송
+    if (!userResponses[videoTitle]) {
+        userResponses[videoTitle] = { motion: "", sync: "", appearance: "" };
+    }
+
+    // 🔥 질문 인덱스에 따라 다른 응답 저장
+    if (questionIndex === 1) {
+        userResponses[videoTitle].motion = choice;
+    } else if (questionIndex === 2) {
+        userResponses[videoTitle].sync = choice;
+    } else if (questionIndex === 3) {
+        userResponses[videoTitle].appearance = choice;
+    }
+
+    console.log(`✅ [INFO] ${videoTitle} - Q${questionIndex}: ${choice}`);
+}
+
+function saveResponsesToGoogleSheets() {
+    if (!googleScriptURL) {
+        alert("🚨 Google Apps Script URL을 입력하세요!");
+        return;
+    }
+
     fetch(googleScriptURL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            videoTitle: videoData.title,
-            generatedLink: videoData.generatedLink,
-            referenceTitle: videoData.referenceTitle,
-            referenceLink: videoData.referenceLink,
-            choice: choice
-        })
+        body: JSON.stringify(userResponses)
     })
     .then(response => response.text())
     .then(data => {
-        console.log("✅ 응답 확인:", data);
-        alert(`선택이 저장되었습니다: ${choice}`);
-
-        // // 다음 비디오로 이동
-        // currentIndex++;
-        // if (currentIndex >= generatedVideos.length) {
-        //     alert("설문이 종료되었습니다. 감사합니다!");
-        //     return;
-        // }
-        // updateVideo();
+        console.log("✅ 응답 저장 완료:", data);
+        alert("설문 응답이 저장되었습니다!");
     })
     .catch(error => console.error("❌ 오류 발생:", error));
 }
