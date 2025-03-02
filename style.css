@@ -41,11 +41,19 @@ body {
     border: none;
 }
 
-.image-container img {
-    max-width: 60%;
-    height: auto;
-    display: block;
+.image-container {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    width: 100%; 
     margin-top: 10px;
+}
+
+.image-container img {
+    max-width: 60%; 
+    height: auto; 
+    display: block;
+    margin: 10px auto;
 }
 
 .buttons {
