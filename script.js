@@ -40,9 +40,10 @@ async function initializeData() {
 
     // ref-image.csv 로드 & Google Drive 이미지 URL 변환
     const refImageData = await loadCSV("ref-image.csv");
+    let referenceImages = {};
     refImageData.forEach(image => {
-        if (image.tgt && image["Embedded link"]) {
-            referenceImages[image.tgt.trim()] = `https://drive.google.com/uc?id=${image["Embedded link"].trim()}`;
+        if (image.title && image["Embedded link"]) {
+            referenceImages[image.title.trim()] = `https://drive.google.com/uc?id=${image["Embedded link"].trim()}`;
         }
     });
 
@@ -52,7 +53,6 @@ async function initializeData() {
     generatedVideos = []; // 기존 데이터 초기화 후 저장
     genData.forEach(video => {
         if (!video.title || !video["Embedded link"]) {
-            console.warn("[WARN] videos.csv에서 잘못된 데이터 발견:", video);
             return;
         }
 
@@ -61,14 +61,11 @@ async function initializeData() {
 
         let referenceTitle = findReferenceTitle(title);
         let referenceLink = referenceVideos[referenceTitle] || "";
+        let referenceImage = referenceImages[title] || ""; 
 
-        // console.log(`▶ [INFO] 찾은 비디오: ${title}`);
-        // console.log(`  - 🎥 생성된 비디오 링크: ${embeddedLink}`);
-        // console.log(`  - 🔗 매칭된 레퍼런스: ${referenceTitle} → ${referenceLink || "없음"}`);
-
-        // 리스트에 추가
-        generatedVideos.push({ title, generatedLink: embeddedLink, referenceTitle, referenceLink });
+        generatedVideos.push({ title, generatedLink: embeddedLink, referenceTitle, referenceLink, referenceImage });
     });
+
 
     console.log("[INFO] 총", generatedVideos.length, "개의 비디오 데이터가 로드됨");
 
