@@ -1,7 +1,7 @@
 let videos = [];
 let currentIndex = 0;
 
-// videos.txt에서 유튜브 링크 가져오기
+// videos.txt에서 Google Drive 동영상 링크 가져오기
 async function loadVideos() {
     const response = await fetch('videos.txt');
     const data = await response.text();
@@ -33,11 +33,21 @@ function restartVideos() {
 
 // iframe 업데이트 및 버튼 상태 변경
 function updateVideo() {
-    document.getElementById('videoFrame').src = videos[currentIndex];
+    let iframe = document.getElementById('videoFrame');
+    iframe.src = videos[currentIndex];
 
     document.getElementById('prevBtn').style.display = currentIndex === 0 ? "none" : "inline-block";
     document.getElementById('nextBtn').style.display = currentIndex === videos.length - 1 ? "none" : "inline-block";
     document.getElementById('homeBtn').style.display = currentIndex === videos.length - 1 ? "inline-block" : "none";
+}
+
+// iframe 크기 자동 조정
+function resizeIframe(iframe) {
+    try {
+        iframe.style.width = iframe.contentWindow.document.body.scrollWidth + "px";
+    } catch (e) {
+        console.log("iframe 크기 조정 실패:", e);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', loadVideos);
