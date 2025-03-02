@@ -3,7 +3,7 @@ let referenceVideos = {};  // reference.csv 데이터 (title → Embedded link �
 let currentIndex = 0;
 
 // 특정 키워드 목록 (EC, DE, AE, BE, EB 등)
-const keywords = ["EC", "DE", "AE", "BE", "EB"];
+const keywords = ["AE", "BE", "CE", "DE", "EA", "EB", "EC", "ED"];
 
 // CSV 파일을 읽어와 JSON으로 변환하는 함수
 async function loadCSV(file) {
