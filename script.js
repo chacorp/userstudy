@@ -15,6 +15,7 @@ async function loadCSV(file) {
 
     return rows.slice(1).map(row => {
         const values = row.split(",").map(value => value.trim()); // ✅ 쉼표 기준으로 데이터 분리
+        console.log(`values: ${values}`);
         return Object.fromEntries(headers.map((header, i) => [header, values[i] || ""]));
     });
 }
