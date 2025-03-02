@@ -60,12 +60,14 @@ async function initializeData() {
         const embeddedLink = video["Embedded link"].trim();
         const tgt = video.tgt.trim();
 
+        const task = video.task.trim();
+
         let referenceTitle = findReferenceTitle(title);
         let referenceLink = referenceVideos[referenceTitle] || "";
         let referenceImage = referenceImages[tgt] || ""; 
         console.log(`📌 [INFO] referenceImage ${tgt}: ${referenceImages[tgt]}`);
 
-        generatedVideos.push({ title, generatedLink: embeddedLink, referenceTitle, referenceLink, referenceImage });
+        generatedVideos.push({ title, generatedLink: embeddedLink, referenceTitle, referenceLink, referenceImage, task });
     });
 
 
@@ -152,7 +154,7 @@ function updateVideo() {
     referenceVideoFrame.allow = "autoplay; controls; loop; playsinline"; // allow 속성 적용
 
     const referenceImage = document.getElementById("referenceImage");
-    if (videoData.referenceImage) {
+    if (videoData.task === "reenact" && videoData.referenceImage) {
         referenceImage.src = videoData.referenceImage;
         referenceImage.style.display = "block";
     } else {
