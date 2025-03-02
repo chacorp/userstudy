@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Page</title>
+    <title>Video Player</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>동영상</h1>
+        <h1>동영상 플레이어</h1>
         <iframe id="videoFrame" width="800" height="450" src="" frameborder="0" allowfullscreen></iframe>
         <div class="buttons">
-            <a id="nextBtn" class="next-btn">다음 영상 ▶</a>
+            <button id="prevBtn" class="nav-btn" onclick="changeVideo(-1)">◀ 이전</button>
+            <button id="nextBtn" class="nav-btn" onclick="changeVideo(1)">다음 ▶</button>
         </div>
+        <button id="homeBtn" class="home-btn" onclick="restartVideos()" style="display: none;">처음으로 ↺</button>
     </div>
 </body>
 </html>
