@@ -39,7 +39,7 @@ async function initializeData() {
 
     if (!referenceVideos) {
         console.log("📌 [INFO] reference.csv 데이터 로딩...");
-        const refData = loadCSV("reference.csv"); 
+        const refData = await loadCSV("reference.csv"); 
         referenceVideos = {};
         refData.forEach(video => {
             if (video.title && video["Embedded link"]) {
@@ -60,7 +60,7 @@ async function initializeData() {
     });
     // console.log("[INFO] referenceImages 로드 완료:", referenceImages);
 
-    const genData = loadCSV("reenact.csv");
+    const genData = await loadCSV("reenact.csv");
     generatedVideos = [];
 
     genData.forEach(video => {
