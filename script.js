@@ -168,6 +168,12 @@ function findReferenceTitle(title) {
 function changeVideo(direction) {
     if (generatedVideos.length === 0) return;
 
+    //checking checks!
+    if (!isAllChecked()) {
+        alert("🚨 모든 질문에 응답하셔야 다음 페이지로 이동할 수 있습니다!");
+        return;
+    }
+
     currentIndex += direction;
 
     if (currentIndex < 0) currentIndex = 0;
@@ -243,6 +249,16 @@ function updateVideo() {
     // 🔹 페이지 전환 시 스크롤을 맨 위로 이동
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
+
+function isAllChecked() {
+    return (
+        (document.getElementById("motionA").checked || document.getElementById("motionB").checked) &&
+        (document.getElementById("syncA").checked || document.getElementById("syncB").checked) &&
+        (document.getElementById("appearanceA").checked || document.getElementById("appearanceB").checked)
+    );
+}
+
+
 
 // function saveResponsesToGoogleSheets() {
 //     if (!googleScriptURL) {
