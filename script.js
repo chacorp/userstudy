@@ -20,7 +20,7 @@ async function loadCSV(file) {
 
 // videos.csv + reference.csv 로드
 async function loadVideos() {
-    const refData = await loadCSV("reference.csv");
+    const refData = await loadCSV("references.csv");
     const genData = await loadCSV("videos.csv");
 
     // reference.csv에서 title → Embedded link 매핑
