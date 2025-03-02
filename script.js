@@ -217,14 +217,14 @@ function updateVideo() {
     if (nextBtn) nextBtn.style.display = currentIndex === generatedVideos.length - 1 ? "none" : "inline-block";
     if (homeBtn) homeBtn.style.display = currentIndex === generatedVideos.length - 1 ? "inline-block" : "none";
 
-    if (userResponses[videoKey]) {
-        document.getElementById("motionA").checked = (userResponses[videoKey].motion === 'A');
-        document.getElementById("motionB").checked = (userResponses[videoKey].motion === 'B');
-        document.getElementById("syncA").checked = (userResponses[videoKey].sync === 'A');
-        document.getElementById("syncB").checked = (userResponses[videoKey].sync === 'B');
-        document.getElementById("appearanceA").checked = (userResponses[videoKey].appearance === 'A');
-        document.getElementById("appearanceB").checked = (userResponses[videoKey].appearance === 'B');
-    }
+    // if (userResponses[videoKey]) {
+    //     document.getElementById("motionA").checked = (userResponses[videoKey].motion === 'A');
+    //     document.getElementById("motionB").checked = (userResponses[videoKey].motion === 'B');
+    //     document.getElementById("syncA").checked = (userResponses[videoKey].sync === 'A');
+    //     document.getElementById("syncB").checked = (userResponses[videoKey].sync === 'B');
+    //     document.getElementById("appearanceA").checked = (userResponses[videoKey].appearance === 'A');
+    //     document.getElementById("appearanceB").checked = (userResponses[videoKey].appearance === 'B');
+    // }
 
     resetCheckboxes();
     // 🔹 페이지 전환 시 스크롤을 맨 위로 이동
