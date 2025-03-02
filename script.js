@@ -106,6 +106,10 @@ function updateChoice(questionIndex, choice) {
         userResponses[videoKey] = { motion: "", sync: "", appearance: "" };
     }
 
+    userResponses[videoKey].motion = 'none';
+    userResponses[videoKey].sync = 'none';
+    userResponses[videoKey].appearance = 'none';
+
     // 🔹 같은 질문에서 하나만 선택할 수 있도록 처리
     if (questionIndex === 1) {
         userResponses[videoKey].motion = choice;
