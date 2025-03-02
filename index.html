@@ -5,16 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Page</title>
     <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>동영상 1</h1>
-        <video controls>
-            <source src="assets/video1.mp4" type="video/mp4">
-            브라우저가 video 태그를 지원하지 않습니다.
-        </video>
+        <h1>동영상</h1>
+        <iframe id="videoFrame" width="800" height="450" src="" frameborder="0" allowfullscreen></iframe>
         <div class="buttons">
-            <a href="video2.html" class="next-btn">다음 영상 ▶</a>
+            <a id="nextBtn" class="next-btn">다음 영상 ▶</a>
         </div>
     </div>
 </body>
