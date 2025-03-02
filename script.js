@@ -124,6 +124,18 @@ function updateVideo() {
     const referenceVideoFrame = document.getElementById("referenceVideo");
     const referenceSection = document.getElementById("referenceSection");
 
+    referenceVideoFrame.src = videoData.referenceLink;
+    referenceVideoFrame.allow = "autoplay; controls; loop; playsinline"; // allow 속성 적용
+    if (videoData.referenceLink) {
+        if (referenceVideoFrame) {
+            referenceVideoFrame.src = videoData.referenceLink;
+            referenceVideoFrame.allow = "autoplay; controls; loop; playsinline"; // allow 속성 적용
+        }
+        if (referenceSection) referenceSection.style.display = "block";
+    } else {
+        if (referenceSection) referenceSection.style.display = "none";
+    }
+
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
     const homeBtn = document.getElementById("homeBtn");
@@ -133,8 +145,8 @@ function updateVideo() {
     if (homeBtn) homeBtn.style.display = currentIndex === generatedVideos.length - 1 ? "inline-block" : "none";
 }
 
-document.addEventListener("DOMContentLoaded", initializeData());
-// document.addEventListener("DOMContentLoaded", () => {
-//     console.log("📌 [INFO] DOMContentLoaded 이벤트 발생 - initializeData 실행");
-//     initializeData();
-// });
+
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("📌 [INFO] DOMContentLoaded 이벤트 발생 - initializeData 실행");
+    initializeData();
+});
