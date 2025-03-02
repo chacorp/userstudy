@@ -37,12 +37,15 @@ async function initializeData() {
         console.log("[DEBUG] referenceVideos 로드 완료:", Object.keys(referenceVideos));
     }
 
-    // 🔹 ref-image.csv 로드
+    // ref-image.csv 로드 & Google Drive 이미지 URL 변환
     const refImageData = await loadCSV("ref-image.csv");
     let referenceImages = {};
     refImageData.forEach(image => {
         if (image.tgt && image["Embedded link"]) {
-            referenceImages[image.tgt.trim()] = image["Embedded link"].trim();
+            let fileId = image["Embedded link"].match(/[-\w]{25,}/); // FILE_ID 추출
+            if (fileId) {
+                referenceImages[image.tgt.trim()] = `https://drive.google.com/uc?id=${fileId[0]}`;
+            }
         }
     });
 
@@ -154,13 +157,8 @@ function updateVideo() {
 
     const referenceImage = document.getElementById("referenceImage");
     if (videoData.referenceImage) {
-        let fileId = videoData.referenceImage.match(/[-\w]{25,}/); // FILE_ID 추출
-        if (fileId) {
-            referenceImage.src = `https://drive.google.com/uc?id=${fileId[0]}`;
-            referenceImage.style.display = "block";
-        } else {
-            referenceImage.style.display = "none";
-        }
+        referenceImage.src = videoData.referenceImage;
+        referenceImage.style.display = "block";
     } else {
         referenceImage.style.display = "none";
     }
