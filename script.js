@@ -1,9 +1,11 @@
 let referenceVideos = null;  // reference.csv 데이터를 한 번만 로드하도록 설정
 let generatedVideos = [];    // videos.csv에서 불러온 데이터 저장
 let currentIndex = 0;
+const googleScriptURL = "YOUR_GOOGLE_APPS_SCRIPT_URL";
 
 // 특정 키워드 목록 (EC, DE, AE, BE, EB 등)
 const keywords = ["AE", "BE", "CE", "DE", "EA", "EB", "EC", "ED"];
+
 
 // CSV 파일을 읽어 JSON으로 변환하는 함수
 async function loadCSV(file) {
@@ -35,8 +37,8 @@ async function initializeData() {
         console.log("[DEBUG] referenceVideos 로드 완료:", Object.keys(referenceVideos));
     }
 
-    console.log("📌 [INFO] reenact.csv 데이터 로드 시작");
-    const genData = await loadCSV("reenact.csv");
+    console.log("📌 [INFO] videos.csv 데이터 로드 시작");
+    const genData = await loadCSV("videos.csv");
 
     generatedVideos = []; // 기존 데이터 초기화 후 저장
     genData.forEach(video => {
@@ -67,6 +69,17 @@ async function initializeData() {
     } else {
         console.error("[ERROR] 로드된 비디오가 없습니다!");
     }
+}
+
+function saveGoogleScriptURL() {
+    const inputURL = document.getElementById("googleScriptURL").value.trim();
+    if (!inputURL.startsWith("https://script.google.com/macros/s/")) {
+        alert("🚨 올바른 Google Apps Script URL을 입력하세요!");
+        return;
+    }
+    googleScriptURL = inputURL;
+    localStorage.setItem("googleScriptURL", googleScriptURL); // 🔥 로컬스토리지에 저장
+    alert("✅ Google Script URL이 저장되었습니다!");
 }
 
 // title에서 키워드 다음의 단어 찾기
@@ -116,8 +129,9 @@ function updateVideo() {
     const generatedVideoFrame = document.getElementById("generatedVideo");
 
 
-    // 🔹 생성된 비디오 정보 표시
-    titleElement.textContent = videoData.title;
+    // 생성된 비디오 정보 표시
+    // titleElement.textContent = videoData.title;
+    titleElement.textContent = "User Study"
     generatedVideoFrame.src = videoData.generatedLink;
     generatedVideoFrame.allow = "autoplay; controls; loop; playsinline"; // allow 속성 적용
 
@@ -134,6 +148,38 @@ function updateVideo() {
     if (prevBtn) prevBtn.style.display = currentIndex === 0 ? "none" : "inline-block";
     if (nextBtn) nextBtn.style.display = currentIndex === generatedVideos.length - 1 ? "none" : "inline-block";
     if (homeBtn) homeBtn.style.display = currentIndex === generatedVideos.length - 1 ? "inline-block" : "none";
+}
+
+function submitChoice(choice) {
+    if (generatedVideos.length === 0) return;
+    const videoData = generatedVideos[currentIndex];
+
+    // 🔥 Google Sheets에 데이터 전송
+    fetch(googleScriptURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            videoTitle: videoData.title,
+            generatedLink: videoData.generatedLink,
+            referenceTitle: videoData.referenceTitle,
+            referenceLink: videoData.referenceLink,
+            choice: choice
+        })
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log("✅ 응답 확인:", data);
+        alert(`선택이 저장되었습니다: ${choice}`);
+
+        // // 다음 비디오로 이동
+        // currentIndex++;
+        // if (currentIndex >= generatedVideos.length) {
+        //     alert("설문이 종료되었습니다. 감사합니다!");
+        //     return;
+        // }
+        // updateVideo();
+    })
+    .catch(error => console.error("❌ 오류 발생:", error));
 }
 
 

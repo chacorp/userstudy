@@ -9,8 +9,14 @@
 </head>
 <body>
     <div class="container">
-        <h1 id="videoTitle">비디오 제목</h1>
+        <h1 id="videoTitle">User Study</h1>
         
+        <div id="urlInputSection">
+            <label for="googleScriptURL">📌 Google Apps Script URL 입력:</label>
+            <input type="text" id="googleScriptURL" placeholder="https://script.google.com/macros/s/..." style="width: 60%;">
+            <button onclick="saveGoogleScriptURL()">저장</button>
+        </div>
+
         <h2>레퍼런스 비디오</h2>
         <!-- <p><strong>Title:</strong> <span id="referenceTitle"></span></p> -->
         <!-- <p><strong>Embedded Link:</strong> <span id="referenceLink"></span></p> -->
@@ -21,10 +27,17 @@
         <p><strong>Embedded Link:</strong> <span id="generatedLink"></span></p> -->
         <iframe id="generatedVideo" width="900" height="450" src=""></iframe>
         
+
+        <div>
+            <button id="choiceA" onclick="submitChoice('A')">A 선택</button>
+            <button id="choiceB" onclick="submitChoice('B')">B 선택</button>
+        </div>
+
         <div class="buttons">
             <button id="prevBtn" class="nav-btn" onclick="changeVideo(-1)">◀ 이전</button>
             <button id="nextBtn" class="nav-btn" onclick="changeVideo(1)">다음 ▶</button>
         </div>
+
         <button id="homeBtn" class="home-btn" onclick="restartVideos()" style="display: none;">처음으로 ↺</button>
     </div>
 </body>
