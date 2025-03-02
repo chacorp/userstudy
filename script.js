@@ -271,6 +271,50 @@ function saveResponsesToGoogleSheets() {
     .catch(error => console.error("❌ 오류 발생:", error));
 }
 
+function checkCompletionAndShowResults() {
+    let allCompleted = true;
+    let resultsHTML = `
+        <h3>Survey Results</h3>
+        <table border="1">
+            <tr>
+                <th>Video</th>
+                <th>Motion Similarity</th>
+                <th>Lip Sync</th>
+                <th>Appearance Similarity</th>
+            </tr>
+    `;
+
+    for (const videoKey in userResponses) {
+        const response = userResponses[videoKey];
+
+        // 🔥 모든 질문에 답변이 되어 있는지 확인
+        if (!response.motion || !response.sync || !response.appearance) {
+            allCompleted = false;
+            break;
+        }
+
+        resultsHTML += `
+            <tr>
+                <td>${videoKey}</td>
+                <td>${response.motion}</td>
+                <td>${response.sync}</td>
+                <td>${response.appearance}</td>
+            </tr>
+        `;
+    }
+
+    resultsHTML += `</table>`;
+
+    if (allCompleted) {
+        document.getElementById("resultsContainer").innerHTML = resultsHTML;
+        document.getElementById("resultsContainer").style.display = "block";
+        document.getElementById("submitSurveyBtn").style.display = "block"; // 🔥 Google Sheets 전송 버튼 표시
+        console.log("✅ [INFO] 모든 질문에 답변 완료, 결과 표시.");
+    } else {
+        alert("🚨 모든 질문에 답변해야 결과를 확인할 수 있습니다.");
+    }
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("📌 [INFO] DOMContentLoaded 이벤트 발생 - initializeData 실행");

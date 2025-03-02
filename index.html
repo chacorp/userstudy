@@ -56,8 +56,15 @@
         <div class="buttons">
             <button id="prevBtn" class="nav-btn" onclick="changeVideo(-1)">◀ prev</button>
             <button id="nextBtn" class="nav-btn" onclick="changeVideo(1)">next ▶</button>
-            <button onclick="saveResponsesToGoogleSheets()">📤 Submit Responses</button>
+            <button onclick="checkCompletionAndShowResults()">📋 Show Results</button>
         </div>
+        
+        <!-- 🔥 설문 결과를 표시할 영역 -->
+        <div id="resultsContainer" style="display: none; margin-top: 20px;"></div>
+        
+        <!-- 🔥 Google Sheets에 저장하는 버튼 (모든 답변이 완료되었을 때만 표시) -->
+        <button id="submitSurveyBtn" style="display: none;" onclick="saveResponsesToGoogleSheets()">📤 Submit to Google Sheets</button>
+        
         
 
 
