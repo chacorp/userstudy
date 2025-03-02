@@ -62,7 +62,9 @@ async function initializeData() {
 
         let referenceTitle = findReferenceTitle(title);
         let referenceLink = referenceVideos[referenceTitle] || "";
-        let referenceImage = referenceImages[title] || ""; 
+
+        const tgt = video.tgt.trim();
+        let referenceImage = referenceImages[tgt] || ""; 
 
         generatedVideos.push({ title, generatedLink: embeddedLink, referenceTitle, referenceLink, referenceImage });
     });
